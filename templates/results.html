@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml"                                                                                                                                                                                                  
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude">
+  <xi:include href="layout.html" />
+  <head>
+    <title>
+      Password Utility Results
+    </title>
+  </head>
+  <body>
+    <div id="content">
+      <ul>
+        <li py:for="result in results">${result}</li>
+      </ul>
+      <p>Please note that it may take up to 30 minutes for results to take effect.</p>
+      <p>You may need to restart your computer to clear any cached credentials (especially Mac users of the fileserver).</p>
+      <a href="/">return</a>
+    </div>
+  </body>
+</html>

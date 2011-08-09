@@ -1,0 +1,32 @@
+<!DOCTYPE html>                                                                                                                                                                                                                             
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/" py:strip="">
+
+  <py:match path="head" once="true">
+    <head py:attrs="select('@*')">
+      <title py:with="title = list(select('title/text()'))">
+        Lucid Password Tool<py:if test="title">: ${title}</py:if>
+      </title>
+      <!-- <link rel="stylesheet" href="${url('/media/layout.css')}" type="text/css" />
+      <link rel="stylesheet" href="${url('/media/screen.css')}" type="text/css" /> -->
+      <link href="/media/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+      <noscript>
+        <meta http-equiv="refresh" content="0; url=/noscript" />
+      </noscript>
+    </head>
+  </py:match>
+
+  <py:match path="body" once="true">
+
+    <body py:attrs="select('@*')">
+      <div id="root" class="root">         
+        <div id="header">
+          <h1>Password Utility</h1>
+        </div>
+        ${select('div[@id="content"]')}
+      </div>
+    </body>
+
+  </py:match>
+
+</html>

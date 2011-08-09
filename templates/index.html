@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"                                                                                                                                                                                                  
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude">
+  <xi:include href="layout.html" />
+  <head>
+    <title>
+      Password Utility
+    </title>
+  </head>
+  <body>
+    <div id="content">
+      <p>
+        This utility will change your password for the following services:
+        <ul>
+          <li>office fileserver</li>
+          <li>lucid wiki</li>
+          <li>redmine (coming soon)</li>
+          <li>building dashboard network (coming soon)</li>
+        </ul>
+      </p>
+      <p py:if="error" style="color: red;">
+        Invalid username or password
+      </p>
+      <h3>change existing password</h3>
+      <form action="login" method="post" name="login" id="login">
+        <div id="userpass">
+          <p>username: <input type="text" id="username" name="username" /></p>
+          <p>password: <input type="password" id="password" name="password" /></p>
+          <p><input type="submit" name="Submit" value="Submit" /></p>
+        </div>
+      </form>
+      <h3>lost password</h3>
+        <form action="lost" method="post" name="lost" id="lost">
+          <p>username: <input type="text" id="lost_username" name="lost_username" /></p>
+          <p><input type="submit" name="Submit" value="Submit" /></p>
+        </form>
+    </div>
+  </body>
+</html>
