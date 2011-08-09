@@ -1,0 +1,19 @@
+{% if user.cn %}Dear {{ user.cn[0] }},{% endif %}
+
+{% if user.reset_url %}
+You have requested to have your password reset for your account.
+
+Please click below to reset your password.  This link will expire in 24 hours.
+
+{{ user.reset_url }}
+
+If you received this email in error, you can safely ignore this email.
+{% else %}
+You have requested to have your username sent to you.
+
+Your username is: {{ user.uid[0] }}
+
+Click the link below to login:
+
+{{ user.login_url }}
+{% endif %}

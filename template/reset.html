@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+  {% if ok == True %}
+            <div id="alert_placeholder"></div>
+            <div class="panel panel-login" id="reset-panel">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-6 col-xs-offset-3">
+                    <h3 class="panel-title">Reset Password</h3>
+                  </div>
+                </div>
+                <hr>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <form id="reset-form" role="form">
+                      <div class="form-group">
+                        <input type="password" name="newpassword" id="newpassword" tabindex="1" 
+                        class="form-control" data-minlength="8" autocomplete="off" 
+                        placeholder="new password" required>
+                        <span class="help-block">Minimum of 8 characters</span>
+                      </div>
+                      <div class="form-group">
+                        <input type="password" name="confirmPassword" id="confirmPassword" 
+                        tabindex="2" class="form-control" data-match="#newpassword" 
+                        data-match-error="Passwords don't match" autocomplete="off" 
+                        placeholder="confirm new password" required>
+                        <div class="help-block with-errors"></div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-sm-6 col-sm-offset-3">
+                            <input type="submit" name="reset-submit" id="reset-submit" tabindex="4" 
+                            class="form-control btn btn-primary" value="Submit">
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  {% else %}
+        <div class="alert alert-danger">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"> </span>
+          <span class="sr-only">Error:</span>
+          Token is expired or invalid.
+        </div>
+  {% endif %}
+      </div>
+{% endblock content %}
