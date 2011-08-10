@@ -5,11 +5,16 @@ import cherrypy
 from cherrypy import tools
 from lib import template
 import ldap
+import cPickle as pickle
+import datetime
+# use smbpasswd.nthash to generate smb pass
 import smbpasswd
-#smbpasswd.nthash!
-from lib import sha
-from lib import mkpass
 from lib import smail
+from lib import ds
+from lib import strongpw
+from lib import mkpass
+
+baseURL = 'http://dev4.office.luciddg.com:8080'
 
 class Root(object):
 
@@ -17,74 +22,74 @@ class Root(object):
   @template.output('index.html')
   def index(self, **data):
     if dict(**data):
-      if dict(**data)['error'] == 'True':
-        return template.render(error=1)
+      if dict(**data)['error']:
+        return template.render(error=dict(**data)['error'])
     else:
       return template.render(error=0)
 
   @cherrypy.expose
-  @template.output('password.html')
-  def login(self, **data):
+  @template.output('change.html')
+  def update(self, **data):
     data = dict(**data)
-    try: 
-      con = ldap.initialize('ldap://localhost')
-      dn = 'uid=' + data['username'] + ',ou=people,dc=luciddg,dc=com'
-      con.simple_bind_s(dn,data['password'])
-      con.unbind_s()
+    if not data['username'] or not data['password']:
+      raise cherrypy.InternalRedirect('/?error=Missing Field')
+    if ds.authenticate(data['username'], data['password']) != 1:
+      error = ds.authenticate(data['username'], data['password'])
+      error_str = '/?error=' + error.strip()
+      raise cherrypy.InternalRedirect(error_str)
+    else:
       return template.render(username=data['username'])
-    except:
-      print 'failed to bind '  
-      raise cherrypy.InternalRedirect('/?error=True')
 
   @cherrypy.expose
   @template.output('results.html')
   def lost(self, **data):
     results = []
     data = dict(**data)
-    user_dn = 'uid=' + data['lost_username'] + ',ou=people,dc=luciddg,dc=com'
-    newpass = mkpass.GenPasswd2(13)
-    ssha = sha.makeSecret(newpass)
-    nt = smbpasswd.nthash(newpass)
-    try:
-      con = ldap.initialize('ldap://localhost')
-      dn = 'cn=admin,dc=luciddg,dc=com'
-      pw = 'secret'
-      con.simple_bind_s(dn,pw)
-    except:
-      results.append('Error connecting to ldap')
+    token = mkpass.GenPasswd2(17)
+    url = baseURL + '/reset?token=' + token
+    now = datetime.datetime.utcnow()
+    email = ds.getEmail(data['lost_username'])
+    if not email:
+      results.append('No email address on file. Contact sysadmin@luciddg.com.')
       return template.render(results=results)
-    try: 
-      con.compare_s(user_dn,'uid',data['lost_username'])
-    except:
-      results.append('Invalid user')
-      return template.render(results=results)
+    tokenData = { 'timestamp' : now, 'token' : token, 'uid' : data['lost_username'] }
     try:
-      mail = con.search_s(user_dn,ldap.SCOPE_SUBTREE,'(objectclass=ldgOrgPerson)',['mail'])[0][1]['mail'][0]
+      with open('.tokens.pck', 'rb') as tokenPck:
+        pckData = pickle.load(tokenPck)
     except:
-      results.append('You do not have an email address on file')
-      return template.render(results=results)
+      pckData = []
+    pckData.append(tokenData)
+    with open('.tokens.pck', 'wb') as tokenPck:
+      pickle.dump(pckData,tokenPck)
     try:
-      mod_ssha = [(ldap.MOD_REPLACE, 'userPassword', ssha)]
-      con.modify_s(user_dn,mod_ssha)
-      results.append('Updated user password (wiki, etc.)')
+      smail.sendMsg(email,url)
+      results.append('An email with a reset link has been sent.')
     except:
-      results.append('Error updating user password (wiki, etc.)')
-    try:
-      mod_ntpw = [(ldap.MOD_REPLACE, 'sambaNTPassword', nt)]
-      con.modify_s(user_dn,mod_ntpw)
-      results.append('Updated fileserver password')
-    except:
-      results.append('Error updating fileserver password')
-    try:
-      con.unbind_s()
-    except:
-      pass
-    try:
-      smail.sendMsg(mail,newpass)
-      results.append('Your new password has been emailed to ' + mail + '. Please return here to reset it.')
-    except:
-      results.append('Error sending mail to ' + mail)
+      results.append('There was an error sending email. Please contact sysadmin.')
     return template.render(results=results)
+
+  @cherrypy.expose
+  @template.output('reset.html')
+  def reset(self, token):
+    results = []
+    errors = []
+    now = datetime.datetime.utcnow()
+    try:
+      with open('.tokens.pck','rb') as tokenPck:
+        pckData = pickle.load(tokenPck)
+        if len(pckData) > 0:
+          for dict in pckData:
+            if dict['token'] == token:
+              tokenData = dict
+      pckData[:] = [d for d in pckData if d.get('token') != token]
+      with open('.tokens.pck','wb') as pckFile:
+          pickle.dump(pckData,pckFile)
+      duration = now - tokenData['timestamp']
+      if duration.seconds < 360:
+        return template.render(username=tokenData['uid'],errors=False)
+    except:
+      errors.append('No valid tokens found. Tokens are single-use and valid for only 5 minutes.')
+      return template.render(errors=errors,username=False)
     
   @cherrypy.expose
   @template.output('results.html')
@@ -92,41 +97,40 @@ class Root(object):
     data = dict(**data)
     results = []
     if data:
-      if data['newpass1'] == data['newpass2'] and len(data['newpass1']) > 7:
-        ssha = sha.makeSecret(data['newpass1'])
-        nt = smbpasswd.nthash(data['newpass1'])
-        try:
-          dn = 'uid=' + data['username'] + ',ou=people,dc=luciddg,dc=com'
-          con = ldap.initialize('ldap://localhost')
-          con.simple_bind_s(dn,data['password'])
-        except:
-          results.append('Current password entered is invalid.')
+      if data['newpass1'] == data['newpass2']:
+        if strongpw.check(data['newpass1']):
+          results += strongpw.check(data['newpass1'])
           return template.render(results=results)
-        try:
-          mod_ssha = [(ldap.MOD_REPLACE, 'userPassword', ssha)]
-          con.modify_s(dn,mod_ssha)
-          results.append('Updated user password (wiki, etc.)')
-        except:
-          results.append('Error updating user password (wiki, etc.)')
-        try:
-          mod_ntpw = [(ldap.MOD_REPLACE, 'sambaNTPassword', nt)]
-          con.modify_s(dn,mod_ntpw)
-          results.append('Updated fileserver password')
-        except:
-          results.append('Error updating fileserver password')
-        try:
-          con.unbind_s()
-        except:
-          pass
-        return template.render(results=results)
+        else:
+          results += ds.passwd(data['username'],data['newpass1'],data['password'])
+          return template.render(results=results)
       else:
-        results.append('Passwords do not match or password too short (8 chars min)')
+        results.append('Passwords do not match')
         return template.render(results=results)
     else:
-      results.append('ERROR! Contact sysadmin')
+      results.append('ERROR! Contact sysadmin (missing form data)')
       return template.render(results=results)
 
-  
+  @cherrypy.expose
+  @template.output('results.html')
+  def reset_pass(self, **data):
+    data = dict(**data)
+    results = []
+    if data:
+      if data['newpass1'] == data['newpass2']:
+        if strongpw.check(data['newpass1']):
+          results += strongpw.check(data['newpass1'])
+          return template.render(results=results)
+        else:
+          results += ds.passwd(data['username'],data['newpass1'])
+          return template.render(results=results)
+      else:
+        results.append('Passwords do not match')
+        return template.render(results=results)
+    else:
+      results.append('ERROR! Contact sysadmin (missing form data)')
+      return template.render(results=results)
+
 
 def main():
 

@@ -19,21 +19,25 @@
         </ul>
       </p>
       <p py:if="error" style="color: red;">
-        Invalid username or password
+        ${error}
       </p>
-      <h3>change existing password</h3>
-      <form action="login" method="post" name="login" id="login">
-        <div id="userpass">
-          <p>username: <input type="text" id="username" name="username" /></p>
-          <p>password: <input type="password" id="password" name="password" /></p>
-          <p><input type="submit" name="Submit" value="Submit" /></p>
-        </div>
-      </form>
-      <h3>lost password</h3>
+      <div id="index-change" style="float: left; border: 1px dotted gray; padding: 10px; margin: 20px;">
+        <h3>change existing password</h3>
+        <form action="update" method="post" name="update" id="update">
+          <div id="userpass">
+            <p>username: <input type="text" id="username" name="username" /></p>
+            <p>password: <input type="password" id="password" name="password" /></p>
+            <p><input type="submit" name="Submit" value="Submit" /></p>
+          </div>
+        </form>
+      </div>
+      <div id="index-lost" style="float: left; border: 1px dotted gray; padding: 10px; margin: 20px;">
+        <h3>lost password</h3>
         <form action="lost" method="post" name="lost" id="lost">
           <p>username: <input type="text" id="lost_username" name="lost_username" /></p>
           <p><input type="submit" name="Submit" value="Submit" /></p>
         </form>
+      </div>
     </div>
   </body>
 </html>

@@ -3,7 +3,7 @@ from base64 import encodestring as encode
 from base64 import decodestring as decode
 import os
 
-def makeSecret(password):
+def passwd(password):
     salt = os.urandom(4)
     h = hashlib.sha1(password)
     h.update(salt)
