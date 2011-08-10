@@ -9,8 +9,17 @@
   </head>
   <body>
     <div id="content">
-      <div>
+      <div id="userpass" class="change-pass">
         <h2>change password</h2>
+        <form action="change_pass" method="post" name="change_pass" id="change_pass">
+          <input type="hidden" id="username" name="username" value="${username}"/>
+          <p><label for="password">current password</label> <input type="password" id="password" name="password" /></p>
+          <p><label for="newpass1">new password</label> <input type="password" id="newpass1" name="newpass1" /></p>
+          <p><label for="newpass2">new password (verify)</label> <input type="password" id="newpass2" name="newpass2" /></p>
+          <p><input type="submit" name="Submit" value="Submit" /></p>
+        </form>
+      </div>
+      <div id="requirements">
         <p>Passwords requirements:
           <ul>
             <li>8+ characters</li>
@@ -19,16 +28,7 @@
             <li>one or more of the following symbols: ! @ # $ % ^ &amp; * ? _ ~ - ( )</li>
           </ul>
         </p>
-        <form action="change_pass" method="post" name="change_pass" id="change_pass">
-        <div id="userpass">
-          <input type="hidden" id="username" name="username" value="${username}"/>
-          <p>current password: <input type="password" id="password" name="password" /></p>
-          <p>new password: <input type="password" id="newpass1" name="newpass1" /></p>
-          <p>new password (verify): <input type="password" id="newpass2" name="newpass2" /></p>
-          <p><input type="submit" name="Submit" value="Submit" /></p>
-        </div>
-        </form>
-      </div>
-    </div>
+      </div> <!-- end content -->
+    </div> <!-- end root -->
   </body>
 </html>

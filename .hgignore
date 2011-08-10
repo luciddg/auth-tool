@@ -1,3 +1,4 @@
 syntax: glob
 .tokens.pck
 *.pyc
+.virtualenv

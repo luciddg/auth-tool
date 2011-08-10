@@ -9,32 +9,36 @@
   </head>
   <body>
     <div id="content">
-      <p>
-        This utility will change your password for the following services:
-        <ul>
-          <li>office fileserver</li>
-          <li>lucid wiki</li>
-          <li>redmine (coming soon)</li>
-          <li>building dashboard network (coming soon)</li>
-        </ul>
-      </p>
-      <p py:if="error" style="color: red;">
+      
+      <div id="info">
+        <p>
+          This utility will change your password for the following services:
+          <ul>
+            <li>office fileserver</li>
+            <li>lucid wiki</li>
+            <li>redmine (coming soon)</li>
+            <li>building dashboard network (coming soon)</li>
+          </ul>
+        </p>
+      </div>
+
+      <p py:if="error" class="error">
         ${error}
       </p>
-      <div id="index-change" style="float: left; border: 1px dotted gray; padding: 10px; margin: 20px;">
+      <div id="index-change">
         <h3>change existing password</h3>
         <form action="update" method="post" name="update" id="update">
           <div id="userpass">
-            <p>username: <input type="text" id="username" name="username" /></p>
-            <p>password: <input type="password" id="password" name="password" /></p>
+            <p><label for="username">username</label> <input type="text" id="username" name="username" /></p>
+            <p><label for="password">password</label> <input type="password" id="password" name="password" /></p>
             <p><input type="submit" name="Submit" value="Submit" /></p>
           </div>
         </form>
       </div>
-      <div id="index-lost" style="float: left; border: 1px dotted gray; padding: 10px; margin: 20px;">
-        <h3>lost password</h3>
+      <div id="index-lost">
+        <h3>reset lost password</h3>
         <form action="lost" method="post" name="lost" id="lost">
-          <p>username: <input type="text" id="lost_username" name="lost_username" /></p>
+          <p><label for="lost_username">username</label> <input type="text" id="lost_username" name="lost_username" /></p>
           <p><input type="submit" name="Submit" value="Submit" /></p>
         </form>
       </div>

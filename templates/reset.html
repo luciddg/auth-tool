@@ -9,13 +9,21 @@
   </head>
   <body>
     <div id="content">
-      <div py:if="errors" style="color: red">
+      <div py:if="errors" class="error">
         <ul>
           <li py:for="error in errors">${error}</li>
         </ul>
       </div>
-      <div py:if="username">
+      <div py:if="username" id="userpass" class="reset-pass">
         <h2>change password</h2>
+        <form action="reset_pass" method="post" name="reset_pass" id="reset_pass">
+          <input type="hidden" id="username" name="username" value="${username}"/>
+          <p><label for="newpass1">new password</label> <input type="password" id="newpass1" name="newpass1" /></p>
+          <p><label for="newpass2">new password (verify)</label> <input type="password" id="newpass2" name="newpass2" /></p>
+          <p><input type="submit" name="Submit" value="Submit" /></p>
+        </form>
+      </div>
+      <div id="requirements" py:if="username">
         <p>Passwords requirements:
           <ul>
             <li>8+ characters</li>
@@ -24,14 +32,6 @@
             <li>one or more of the following symbols: ! @ # $ % ^ &amp; * ? _ ~ - ( )</li>
           </ul>
         </p>
-        <div id="userpass">
-          <form action="reset_pass" method="post" name="reset_pass" id="reset_pass">
-            <input type="hidden" id="username" name="username" value="${username}"/>
-            <p>new password: <input type="password" id="newpass1" name="newpass1" /></p>
-            <p>new password: <input type="password" id="newpass2" name="newpass2" /> (verify)</p>
-            <p><input type="submit" name="Submit" value="Submit" /></p>
-          </form>
-        </div>
       </div>
     </div>
   </body>

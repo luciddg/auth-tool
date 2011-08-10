@@ -1,0 +1,14 @@
+form p { position:relative }
+label  { position:absolute; top:0.3em; left:0.3em; font-size: 0.8em;}
+.error { color: red; }
+#index-change, #index-lost, .reset-pass, .change-pass { 
+float: left; 
+border: 1px solid gray;
+border-radius: 5px;
+box-shadow: 3px 3px 3px #444;
+padding: 10px 30px;
+margin: 20px;
+}
+input[type="text"], input[type="password"] { min-width: 250px; }
+#requirements { margin: 20px; padding: 10px; float: left; }
+#info { margin: 0 20px; padding: 0 10px; }
