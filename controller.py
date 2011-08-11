@@ -7,7 +7,6 @@ from lib import template
 import ldap
 import cPickle as pickle
 import datetime
-# use smbpasswd.nthash to generate smb pass
 import smbpasswd
 from lib import smail
 from lib import ds
@@ -15,6 +14,8 @@ from lib import strongpw
 from lib import mkpass
 
 baseURL = 'https://password.office.luciddg.com'
+appDir = os.path.dirname(os.path.realpath( __file__ ))
+tokenFile = appDir + '/.tokens.pck'
 
 class Root(object):
 
@@ -54,19 +55,19 @@ class Root(object):
       return template.render(results=results)
     tokenData = { 'timestamp' : now, 'token' : token, 'uid' : data['lost_username'] }
     try:
-      with open('.tokens.pck', 'rb') as tokenPck:
+      with open(tokenFile, 'rb') as tokenPck:
         pckData = pickle.load(tokenPck)
     except:
       pckData = []
     pckData.append(tokenData)
-    with open('.tokens.pck', 'wb') as tokenPck:
+    with open(tokenFile, 'wb') as tokenPck:
       pickle.dump(pckData,tokenPck)
     try:
       smail.sendMsg(email,url)
       results.append('An email with a reset link has been sent.')
     except:
       results.append('There was an error sending email. Please contact sysadmin.')
-    return template.render(results=results)
+    return template.render(results=results,notes=False)
 
   @cherrypy.expose
   @template.output('reset.html')
@@ -75,14 +76,14 @@ class Root(object):
     errors = []
     now = datetime.datetime.utcnow()
     try:
-      with open('.tokens.pck','rb') as tokenPck:
+      with open(tokenFile,'rb') as tokenPck:
         pckData = pickle.load(tokenPck)
         if len(pckData) > 0:
           for dict in pckData:
             if dict['token'] == token:
               tokenData = dict
       pckData[:] = [d for d in pckData if d.get('token') != token]
-      with open('.tokens.pck','wb') as pckFile:
+      with open(tokenFile,'wb') as pckFile:
           pickle.dump(pckData,pckFile)
       duration = now - tokenData['timestamp']
       if duration.seconds < 360:
@@ -109,7 +110,7 @@ class Root(object):
         return template.render(results=results)
     else:
       results.append('ERROR! Contact sysadmin (missing form data)')
-      return template.render(results=results)
+      return template.render(results=results,notes=True)
 
   @cherrypy.expose
   @template.output('results.html')
@@ -129,7 +130,7 @@ class Root(object):
         return template.render(results=results)
     else:
       results.append('ERROR! Contact sysadmin (missing form data)')
-      return template.render(results=results)
+      return template.render(results=results,notes=True)
 
 
 def main():
@@ -145,10 +146,14 @@ def main():
     })  
 
     cherrypy.quickstart(Root(), '/', {
-        '/media': {
+        '/js': {
             'tools.staticdir.on': True,
-            'tools.staticdir.dir': 'media'
-        }   
+            'tools.staticdir.dir': 'js'
+        },
+        '/css': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': 'css'
+        }
     })  
 
 if __name__ == '__main__':
