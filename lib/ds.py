@@ -1,6 +1,7 @@
 import ldap
 from lib import sha
 import smbpasswd
+from lib import tokenlib
 
 ldapURI = 'ldap://localhost'
 baseDN = 'ou=people,dc=luciddg,dc=com'
@@ -15,22 +16,30 @@ def authenticate(uid,password):
     cx.unbind_s()
     return 1
   except ldap.LDAPError, e:
-    return e.message['desc']
+    error = 'Error: ' + e.message['desc']
+    return error
 
-def passwd(uid,newpw,oldpw=''):
+def passwd(uid,newpw,oldpw='',token=''):
   results = []
   ssha = sha.passwd(newpw)
   nt = smbpasswd.nthash(newpw)
   userDN = 'uid=' + uid + ',' + baseDN
+  if oldpw and token:
+    return ['Error: cannot use both token and old password.']
+  if not oldpw and not token:
+    return ['Error: old password or reset token required.']
   try:
     cx = ldap.initialize(ldapURI)
     if oldpw:
       cx.simple_bind_s(userDN,oldpw)
     else:
-      cx.simple_bind_s(adminDN,adminPw)
+      if tokenlib.verify(token):
+        cx.simple_bind_s(adminDN,adminPw)
+        tokenlib.delete(token)
+      else:
+        return ['Error: invalid token. Tokens are single-use and expire after 5 minutes.']
   except ldap.LDAPError, e:
-    results.append(e.message['desc'])
-    return results
+    return [('Error: ' + e.message['desc'])]
   try:
     mod_ssha = [(ldap.MOD_REPLACE, 'userPassword', ssha)]
     cx.modify_s(userDN,mod_ssha)

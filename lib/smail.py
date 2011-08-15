@@ -1,5 +1,9 @@
 from turbomail.control import interface
 from turbomail import Message
+from lib import msgtpl
+import string
+
+baseURL = 'https://password.office.luciddg.com'
 
 turbomail_config = {
   'mail.on' : True,
@@ -8,10 +12,11 @@ turbomail_config = {
 }
 
 
-def sendMsg(addr,msg):
+def sendMsg(addr,token):
+  body = string.Template(msgtpl.message).substitute(baseURL=baseURL,token=token)
   interface.start(turbomail_config)
   message = Message("sysadmin@luciddg.com", addr, "password reset")
-  message.plain = msg
+  message.plain = body
   message.send()
   interface.stop()
 

@@ -1,14 +1,63 @@
-form p { position:relative }
-label  { position:absolute; top:0.3em; left:0.3em; font-size: 0.8em;}
-.error { color: red; }
-#index-change, #index-lost, .reset-pass, .change-pass { 
-float: left; 
-border: 1px solid gray;
-border-radius: 5px;
-box-shadow: 3px 3px 3px #444;
-padding: 10px 30px;
-margin: 20px;
+body {
+  font-family: ubuntu, "lucida grande", sans-serif; 
+  background-color: #898;
 }
-input[type="text"], input[type="password"] { min-width: 250px; }
-#requirements { margin: 20px; padding: 10px; float: left; }
+#bg { 
+  height: 100%;
+}
+#root {
+  width: 975px;
+  margin: 50px auto 75px auto;
+  background-color: #eee;
+  border-radius: 5px;
+  border: 1px solid black;
+  box-shadow: 3px 3px 3px black;
+}
+#header {
+  margin-left: 20px;
+}
+#error, .error { 
+  color: red; 
+  margin: 20px;
+  padding: 10px 30px;
+  border: solid 1px red;
+  border-radius: 5px;
+  box-shadow: 3px 3px 3px #600;
+  display: none;
+  background-color: white;
+}
+#success, .success {
+  color: green;
+  margin: 20px;
+  padding: 10px 30px;
+  border: solid 1px green;
+  border-radius: 5px;
+  box-shadow: 3px 3px 3px #060;
+  display: none;
+  background-color: white;
+}
+#index-change, #index-lost, .reset-pass, .change-pass { 
+  float: left; 
+  border: 1px solid gray;
+  border  -radius: 5px;
+  box-shadow: 3px 3px 3px #444;
+  padding: 10px 30px;
+  margin: 20px;
+  border-radius: 5px;
+  background-color: white;
+}
+/* input[type="text"], input[type="password"] { min-width: 250px; } */
+#requirements { margin: 0 50px; padding: 10px; float: right; width: 385px; }
 #info { margin: 0 20px; padding: 0 10px; }
+
+label, input[type="text"], input[type="password"]{
+    float:left;
+    display:block;
+    margin: 10px;
+}
+
+label {
+  /* width: 75px; */
+}
+.clear-both { clear: both; }
+#form-container{ margin: auto; }

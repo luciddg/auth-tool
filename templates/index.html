@@ -1,15 +1,18 @@
-<html xmlns="http://www.w3.org/1999/xhtml"                                                                                                                                                                                                  
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude">
   <xi:include href="layout.html" />
   <head>
     <title>
-      Password Utility
+      Home
     </title>
+    <script type="text/javascript" src="../js/auth.js"></script>
   </head>
+
   <body>
+
     <div id="content">
-      
+
       <div id="info">
         <p>
           This utility will change your password for the following services:
@@ -22,26 +25,39 @@
         </p>
       </div>
 
-      <p py:if="error" class="error">
-        ${error}
-      </p>
-      <div id="index-change">
-        <h3>change existing password</h3>
-        <form action="update" method="post" name="update" id="update">
-          <div id="userpass">
-            <p><label for="username">username</label> <input type="text" id="username" name="username" /></p>
-            <p><label for="password">password</label> <input type="password" id="password" name="password" /></p>
-            <p><input type="submit" name="Submit" value="Submit" /></p>
-          </div>
-        </form>
+      <div id="error">
       </div>
-      <div id="index-lost">
-        <h3>reset lost password</h3>
-        <form action="lost" method="post" name="lost" id="lost">
-          <p><label for="lost_username">username</label> <input type="text" id="lost_username" name="lost_username" /></p>
-          <p><input type="submit" name="Submit" value="Submit" /></p>
-        </form>
+      
+      <div id="success">
       </div>
-    </div>
+
+      <div id="form-container">
+        <div id="index-change">
+          <h3>change existing password</h3>
+          <form action="login" method="post" name="login" id="login">
+            <div id="userpass">
+              <p><label for="username">username</label> <input type="text" id="username" name="username" class="field" /></p>
+              <div class="clear-both"></div>
+              <p><label for="password">password</label> <input type="password" id="password" name="password" class="field"/></p>
+              <p><input type="submit" name="Submit" value="Submit" /></p>
+            </div>
+          </form>
+        </div>
+
+        <div id="index-lost">
+          <h3>reset lost password</h3>
+          <form action="lost" method="post" name="lost" id="lost">
+            <p><label for="lost_username">username</label> <input type="text" id="lost_username" name="lost_username" /></p>
+            <br /><p><input type="submit" name="Submit" value="Submit" /></p>
+          </form>
+        </div>
+        <div class="clear-both"></div>
+      </div> <!-- end form-container -->
+
+      <div class="clear-both"></div>
+
+    </div><!-- end content -->
+
   </body>
+
 </html>
