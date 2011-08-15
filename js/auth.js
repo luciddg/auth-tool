@@ -18,6 +18,8 @@ $(function() {
   });
 
   $("#lost").submit(function() {
+    $('#error').hide();
+    $('#success').hide();
     var postdata = {lost_username: $("#lost_username").val()};
     $.post('/lost', postdata, function(data) {
       if (data.match(/^Error/)) {

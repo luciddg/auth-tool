@@ -1,12 +1,10 @@
 import os, sys
 import cherrypy
-import ldap
 import simplejson
 from lib import template
 from lib import smail
 from lib import ds
 from lib import strongpw
-from lib import mkpass
 from lib import tokenlib
 
 class PassMgr(object):
