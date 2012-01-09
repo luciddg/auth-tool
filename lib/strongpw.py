@@ -8,7 +8,7 @@ def check(password,username=''):
     results.append('Error: password must contain at least one numeral')
   if not re.search('[a-z]',password) or not re.search('[A-Z]',password):
     results.append('Error: password must contain both uppercase and lowercase letters')
-  if not re.search('.[!,@,#,$,%,^,&,*,?,_,~,\-,(,)]', password):
+  if not re.search('[!,@,#,$,%,^,&,*,?,_,~,\-,(,)]', password):
     results.append('Error: password must contain at least one symbol')
   if username:
     print username
