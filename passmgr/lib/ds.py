@@ -1,9 +1,10 @@
 import ldap
-from lib import sha
 import smbpasswd
-from lib import tokenlib
 
-ldapURI = 'ldap://localhost'
+import sha
+import tokenlib
+
+ldapURI = 'ldap://10.11.12.10'
 baseDN = 'ou=people,dc=luciddg,dc=com'
 adminDN = 'uid=passmgr,dc=luciddg,dc=com'
 adminPw = '3WT|78XoQ'

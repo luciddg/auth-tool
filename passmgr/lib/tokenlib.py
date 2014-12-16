@@ -1,7 +1,7 @@
 import os
 import cPickle as pickle
 import datetime
-from lib import mkpass
+import mkpass
 
 tokensFile = (os.path.dirname(os.path.realpath( __file__ )) + '/../.tokens.pck') 
 

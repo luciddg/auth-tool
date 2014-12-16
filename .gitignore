@@ -1,3 +1,4 @@
 .tokens.pck
 *.pyc
 .virtualenv
+*.swp
