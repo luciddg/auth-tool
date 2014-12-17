@@ -24,12 +24,25 @@ class PassMgr(object):
       cherrypy.response.headers['Content-Type'] = 'application/json'
       return simplejson.dumps(ds.authenticate(username,password))
     else:
+      cherrypy.session['user'] = username
+      cherrypy.session['auth'] = True
       return username
 
   @cherrypy.expose
   @template.output('change.html')
   def update(self,username):
-    return template.render(username=username,errors=False,token=False)
+    username = cherrypy.session.get('user', username)
+    keylist = []
+    if cherrypy.session.get('auth'):
+      for key in ds.getKeys(username):
+        keyprint = ds.fingerprint(key)
+        keylist.append(keyprint)
+
+    return template.render(username=username,
+                           errors=False,
+                           token=False,
+                           auth=cherrypy.session.get('auth', False),
+                           keys=keylist)
 
   @cherrypy.expose
   def lost(self, lost_username):
@@ -85,4 +98,40 @@ class PassMgr(object):
     else:
       cherrypy.response.headers['Content-Type'] = 'application/json'
       return '"Error: passwords do not match"'
+
+  @cherrypy.expose
+  def rmkey(self, key_fp=None, *args, **kwargs):
+    if cherrypy.session.get('auth'):
+      username = cherrypy.session.get('user')
+      status, msg = ds.rmKey(username, key_fp)
+      if status == 'success':
+        cherrypy.response.headers['Content-Type'] = 'application/json'
+        return simplejson.dumps(msg)
+      else:
+        cherrypy.response.headers['Content-Type'] = 'application/json'
+        return '"{0}: {1}"'.format(status, msg)
+    else:
+      cherrypy.response.headers['Content-Type'] = 'application/json'
+      return '"Error: unauthorized"'
+
+  @cherrypy.expose
+  def addkey(self, keystring=None, *args, **kwargs):
+    if cherrypy.session.get('auth'):
+      username = cherrypy.session.get('user')
+      if ds.validateKey(keystring):
+        status, msg = ds.addKey(username, str(keystring))
+
+        if status == 'success':
+          cherrypy.response.headers['Content-Type'] = 'application/json'
+          return simplejson.dumps(msg)
+        else:
+          cherrypy.response.headers['Content-Type'] = 'application/json'
+          return '"{0}: {1}:'.format(status, msg)
+      else:
+        cherrypy.response.headers['Content-Type'] = 'application/json'
+        return '"error: invalid key"'
+    else:
+      cherrypy.response.headers['Content-Type'] = 'application/json'
+      return '"Error: unauthorized"'
+
 

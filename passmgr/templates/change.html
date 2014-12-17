@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml"                                                                                                                                                                                                  
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude">
   <xi:include href="layout.html" />
@@ -7,10 +7,17 @@
       Update Password
     </title>
     <script type="text/javascript" src="../js/update.js"></script>
+    <script type="text/javascript" src="../js/modal.js"></script>
   </head>
 
   <body>
     <div id="content">
+      <div id="modalForm">
+        <form action="addkey" method="post" name="addkey" id="addkey"> 
+          <textarea cols="80" rows="10" name="keystring" id="keystring"></textarea>
+          <input type="submit" name="Submit" value="Submit" />
+        </form>
+      </div>
       <div id="error" py:if="errors" style="display: block">${errors}</div>
       <div id="error" py:if="not errors"/>
       <div id="success" />
@@ -43,7 +50,29 @@
             <li>You may need to reboot your computer or clear your browser cache.</li>
           </ul>
         </p>
-      </div> <!-- end content -->
-    </div> <!-- end root -->
+      </div>
+      <div py:if="not errors and auth" id="pubkeys" class="change-keys">
+        <h2>ssh keys</h2>
+        <ul class="boxed-list">
+          <li py:for="key_type, key_fp, key_com in keys" class="ssh-key">
+          <div class="ssh-key-info" id="${key_fp}">
+            <form action="rmkey" method="post" name="rmkey" id="${key_fp}" class="rmkey">
+              <input type="hidden" name="key_fp" id="${key_fp}" value="${key_fp}" />
+                <input type="submit" name="Submit" class="button" value="Delete" />
+              </form>
+              <strong class="ssh-key-comment">
+                ${key_com}
+              </strong>
+              <code class="ssh-key-print">
+                ${key_fp}
+              </code>
+            </div>
+          </li>
+        </ul>
+        <form id="modalPop" action="modalPop">
+          <input type="submit" class="button" value="Add SSH Key" />
+        </form>
+      </div>
+    </div> <!-- end content -->
   </body>
 </html>
