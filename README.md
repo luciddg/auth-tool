@@ -17,8 +17,13 @@ Running tests
 
 Tests are intended to be run with `nose`.  Simply run:
 
-```
-nosetests
-```
+   python setup.py nosetests
 
 Code coverage html output will be in `cover/`
+
+Building
+--------
+
+This package is uses `setuptools` for building.
+
+   python setup.py bdist_wheel
