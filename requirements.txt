@@ -1,4 +1,4 @@
-CherryPy==3.2.2
+CherryPy==3.6.0
 Genshi==0.6
 TurboMail==3.0.3
 funcparserlib==0.3.6
