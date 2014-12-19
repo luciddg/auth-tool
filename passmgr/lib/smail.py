@@ -1,6 +1,6 @@
 from turbomail.control import interface
 from turbomail import Message
-from lib import msgtpl
+import msgtpl
 import string
 
 baseURL = 'https://password.office.luciddg.com'

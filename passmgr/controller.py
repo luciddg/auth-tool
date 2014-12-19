@@ -11,6 +11,8 @@ def main():
     cherrypy.config.update({
         'tools.encode.on': True, 'tools.encode.encoding': 'utf-8',
         'tools.decode.on': True,
+        'tools.sessions.on': True,
+        'tools.sessions.timeout': 30,
         'tools.trailing_slash.on': True,
         'tools.staticdir.root': os.path.abspath(os.path.dirname(__file__)),
         'server.socket_host': '0.0.0.0',
@@ -24,6 +26,10 @@ def main():
         '/css': {
             'tools.staticdir.on': True,
             'tools.staticdir.dir': 'css'
+        },
+        '/images': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': 'images'
         }
     })  
 

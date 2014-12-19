@@ -36,7 +36,7 @@ body {
   display: none;
   background-color: white;
 }
-#index-change, #index-lost, .reset-pass, .change-pass { 
+#index-change, #index-lost, .reset-pass, .change-pass, .change-keys { 
   float: left; 
   border: 1px solid gray;
   border  -radius: 5px;
@@ -46,6 +46,71 @@ body {
   border-radius: 5px;
   background-color: white;
 }
+.boxed-list {
+  list-style: none;
+  margin: 0;
+}
+.boxed-list>li {
+  display: block;
+  margin-left: -50px;
+  margin-right: -10px;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  line-height: 23px;
+  border: 1px solid #e5e5e5;
+}
+.button{
+  float: right;
+  margin-top: 4px;
+}
+li.ssh-key {
+  position: relative;
+  line-height: 18px;
+  padding: 15px;
+}
+.ssh-key-comment {
+  display: block;
+  font-size: normal;
+}
+.ssh-key-print{
+  display: block;
+  font-size: normal;
+}
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+#modal {
+  position: absolute;
+  background: #fff;
+  border: 1px solid gray;
+  border-radius: 5px;
+  box-shadow: 3px 3px 3px #444;
+  padding: 10px 30px;
+}
+#modalcontent {
+  border-radius: 5px;
+  padding: 20px;
+  background: #fff;
+}
+#close {
+  position:absolute;
+  background:url(/images/close.png) 0 0 no-repeat;
+  background-size: 24px 24px;
+  width:24px;
+  height:27px;
+  text-indent:-9999px;
+  display:block;
+  top:-7px;
+  right:-7px;
+}
+
 /* input[type="text"], input[type="password"] { min-width: 250px; } */
 #requirements { margin: 0 50px; padding: 10px; float: right; width: 385px; }
 #info { margin: 0 20px; padding: 0 10px; }
