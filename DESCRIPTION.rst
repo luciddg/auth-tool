@@ -1,5 +1,5 @@
-Lucid Password/Key Utility
-==========================
+AuthTool
+========
 
 Provides a web UI for changing and resetting user passwords or 
-adding and deleting SSH keys in Lucid's LDAP server.
+adding and deleting SSH keys in an LDAP server.

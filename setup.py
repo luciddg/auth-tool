@@ -1,24 +1,27 @@
-from setuptools import setup, find_packages
 from codecs import open
+from setuptools import setup, find_packages
 from os import path
+from pip.req import parse_requirements
 
 here = path.abspath(path.dirname(__file__))
+install_reqs = parse_requirements(path.join(here, 'requirements.txt'))
+reqs = [str(ir.req) for ir in install_reqs]
 
 with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
   long_description = f.read()
 
 setup(
-    name='passmgr',
+    name='auth-tool',
 
-    version='0.2.0',
+    version='1.0.0',
     
-    description='Lucid Password/Key Utility',
+    description='AuthTool',
     long_description=long_description,
 
-    url='https://repos.office.luciddg.com/',
+    url='https://github.com/luciddg/auth-tool',
 
     author='Lucid Operations',
-    author_email='sysadmin@luciddg.com',
+    author_email='ops@luciddg.com',
 
     license='MIT',
 
@@ -26,26 +29,17 @@ setup(
 
     include_package_data=True,
     package_data={
-      'passmgr': ['js/*', 
-        'css/*',
-        'images/*',
-        'templates/*',
+      'auth-tool': [
+        'public/*', 
+        'template/*',
       ],
     },
 
     data_files=[
-      ('conf', ['conf/passmgr.wsgi']),
+      ('config', ['conf/app.cfg', 'conf/server.cfg']),
     ],
 
-    install_requires=[
-      'CherryPy', 
-      'Genshi',
-      'TurboMail',
-      'python-ldap',
-      'simplejson',
-      'smbpasswd',
-      'wsgiref',
-    ],
+    install_requires=reqs,
 
     setup_requires=[
       'nose>=1.0'

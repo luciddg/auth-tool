@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+            <div class="well text-center">
+              <p>Click 
+              <a href="#" id="forgot-form-well-link" class="text-muted">Forgot Password</a> 
+              to reset your password.</p>
+              <p>Login to change your LDAP password or update your SSH keys.</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+            <div id="alert_placeholder"></div>
+            <div class="panel panel-login">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <a href="#" class="active form-link" id="login-form-link">Login</a>
+                  </div>
+                  <div class="col-xs-4">
+                    <a href="#" class="form-link" id="forgot-form-link">Forgot Password</a>
+                  </div>
+                  <div class="col-xs-4">
+                    <a href="#" class="form-link" id="forgotuname-form-link">Forgot Username</a>
+                  </div>
+                </div>
+                <hr>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <form class="index-form" id="login-form" role="form" style="display: block;">
+                      <div class="form-group">
+                        <input type="text" name="login-username" id="login-username" tabindex="1" 
+                        class="form-control" placeholder="Username" aria-describedby="basic-addon2" 
+                        required {% if username %}value="{{ username }}"{% endif %}>
+                      </div>
+                      <div class="form-group">
+                        <input type="password" name="password" id="password" tabindex="2" 
+                        class="form-control" autocomplete="off" placeholder="Password" required>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-sm-6 col-sm-offset-3">
+                            <input type="submit" name="login-submit" id="login-submit" tabindex="4" 
+                            class="form-control btn btn-primary" value="Log In">
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <form class="index-form" id="forgot-form" method="post" 
+                      role="form" style="display: none;">
+                      <div class="form-group">
+  {% if domain %}
+                        <div class="input-group">
+                          <input type="text" name="forgot-username" id="forgot-username" 
+                          tabindex="1" class="form-control" placeholder="email address" 
+                          aria-describedby="basic-addon2" required>
+                          <span class="input-group-addon" id="basic-addon2">@{{ domain }}</span>
+                        </div>
+  {% else %}
+                        <input type="text" name="forgot-username" id="forgot-username" 
+                        tabindex="1" class="form-control" placeholder="email address" required>
+  {% endif %}
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-sm-6 col-sm-offset-3">
+                            <input type="submit" name="forgot-submit" id="forgot-submit" 
+                            tabindex="4" class="form-control btn btn-primary" value="Reset Password">
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <form class="index-form" id="forgotuname-form" method="post" 
+                      role="form" style="display: none;">
+                      <div class="form-group">
+  {% if domain %}
+                        <div class="input-group">
+                          <input type="text" name="forgotuname-username" id="forgotuname-username" 
+                          tabindex="1" class="form-control" placeholder="email address" 
+                          aria-describedby="basic-addon2" required>
+                          <span class="input-group-addon" id="basic-addon2">@{{ domain }}</span>
+                        </div>
+  {% else %}
+                      <input type="text" name="forgotuname-username" id="forgotuname-username" 
+                      tabindex="1" class="form-control" placeholder="email address" required>
+  {% endif %}
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-sm-6 col-sm-offset-3">
+                            <input type="submit" name="forgotuname-submit" id="forgotuname-submit" 
+                            tabindex="4" class="form-control btn btn-primary" value="Send Email">
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock content %}

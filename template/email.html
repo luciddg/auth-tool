@@ -1,0 +1,182 @@
+{% set BASE_STYLE = 'font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; 
+  font-size: 100%; 
+  line-height: 1.6em; 
+  margin: 0; 
+  padding: 0;' 
+%}
+{% set BODY_STYLE = 'font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.6em;
+  -webkit-font-smoothing: antialiased;
+  height: 100%;
+  -webkit-text-size-adjust: none;
+  width: 100% !important;
+  margin: 0;
+  padding: 0;'
+%}
+{% set CONTENT_P = 'font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6em;
+  font-weight: normal;
+  margin: 0 0 10px;
+  padding: 0;'
+%}
+{% set BODY_WRAP = 'font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.6em;
+  width: 100%;
+  margin: 0;
+  padding: 20px;'
+%}
+{% set CONTAINER = 'font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.6em;
+  clear: both !important;
+  display: block !important;
+  max-width: 600px !important;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #f0f0f0;'
+%}
+{% set CONTENT = 'font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.6em;
+  display: block;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0;'
+%}
+{% set BTN_PRIMARY = 'font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.6em;
+  width: auto !important;
+  margin: 0 0 10px;
+  padding: 0;'
+%}
+{% set BTN_TR = 'font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.6em;
+  margin: 0;
+  padding: 0;
+  text-align: center'
+%}
+{% set BTN_TD = 'font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+  font-size: 14px;
+  line-height: 1.6em;
+  border-radius: 3px;
+  text-align: center;
+  vertical-align: top;
+  background-color: #348eda;
+  margin: 0;
+  padding: 0;'
+%}
+{% set BTN_A = 'font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  font-size: 100%;
+  line-height: 2;
+  color: #ffffff;
+  border-radius: 3px;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  background-color: #348eda;
+  margin: 0;
+  padding: 0;
+  border-color: #348eda;
+  border-style: solid;
+  border-width: 10px 20px;'
+%}
+{% set FOOTER_WRAP = 'font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.6em;
+  clear: both !important;
+  width: 100%;
+  margin: 0;
+  padding: 0;' 
+%}
+{% set CONTENT_WRAP = 'font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.6em;
+  width: 100%;
+  margin: 0;
+  padding: 0;'
+%}
+{% set FOOTER_P = 'font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.6em;
+  color: #666666;
+  font-weight: normal;
+  margin: 0 0 10px;
+  padding: 0;'
+%}
+{% set FOOTER_TD = 'font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.6em;
+  clear: both !important;
+  display: block !important;
+  max-width: 600px !important;
+  margin: 0 auto;
+  padding: 0;'
+%}
+<!DOCTYPE html>
+<html style="{{ BASE_STYLE }}">
+  <!-- Copyright (c) [2013] [Lee Munroe] -->
+  <!-- Licensed under MIT (https://github.com/leemunroe/responsive-html-email-template/blob/master/license.txt) -->
+  <!-- from https://github.com/leemunroe/responsive-html-email-template -->
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Password Reset</title>
+  </head>
+  <body bgcolor="#f6f6f6" style="{{ BODY_STYLE }}">
+    <table bgcolor="#f6f6f6" style="{{ BODY_WRAP }}"><tr style="{{ BASE_STYLE }}">
+        <td style="{{ BASE_STYLE }}"></td>
+        <td bgcolor="#FFFFFF" style="{{ CONTAINER }}">
+          <div style="{{ CONTENT }}">
+            <table style="{{ CONTENT_WRAP }}"><tr style="{{ BASE_STYLE }}">
+                <td style="{{ BASE_STYLE }}">
+{% if user.cn %}
+                  <p style="{{ CONTENT_P }}">Dear {{ user.cn[0] }},</p>
+{% endif %}
+{% if user.reset_url %}
+                  <p style="{{ CONTENT_P }}">You have requested to have your password 
+                                             reset for your account.</p>
+                  <p style="{{ CONTENT_P }}">Please click below to reset your password.  
+                                             This link will expire in 24 hours.</p>
+                  <table cellpadding="0" cellspacing="0" border="0" style="{{ BTN_PRIMARY }}">
+                    <tr style="{{ BTN_TR }}">
+                      <td align="center" style="{{ BTN_TD }}" bgcolor="#348eda" valign="top">
+                        <a href="{{ user.reset_url }}" style="{{ BTN_A }}">Reset Password</a>
+{% else %}
+                  <p style="{{ CONTENT_P }}">You have requested to have your username emailed to you.</p>
+                  <p style="{{ CONTENT_P }}">Your username is: {{ user.uid[0] }}</p>
+                  <p style="{{ CONTENT_P }}">Click below to login:</p>
+                  <table cellpadding="0" cellspacing="0" border="0" style="{{ BTN_PRIMARY }}">
+                    <tr style="{{ BTN_TR }}">
+                      <td align="center" style="{{ BTN_TD }}" bgcolor="#348eda" valign="top">
+                        <a href="{{ user.login_url }}" style="{{ BTN_A }}">Login</a>
+{% endif %}
+                      </td>
+                  </tr></table>
+                </td>
+            </tr></table>
+          </div>
+        </td>
+        <td style="{{ BASE_STYLE }}"></td>
+    </tr></table>
+    <table style="{{ FOOTER_WRAP }}"><tr style="{{ BASE_STYLE }}">
+        <td style="{{ BASE_STYLE }}"></td>
+        <td style="{{ FOOTER_TD }}">
+          <div style="{{ CONTENT }}">
+            <table style="{{ CONTENT_WRAP }}"><tr style="{{ BASE_STYLE }}">
+                <td align="center" style="{{ BASE_STYLE }}">
+                  <p style="{{ FOOTER_P }}">If you received this email in error, 
+                                            you can safely ignore this email.</p>
+                </td>
+            </tr></table>
+          </div>
+        </td>
+        <td style="{{ BASE_STYLE }}"></td>
+    </tr></table>
+  </body>
+</html>
