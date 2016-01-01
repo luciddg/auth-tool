@@ -1,0 +1,12 @@
+language: python
+
+python:
+  - "2.7"
+
+install:
+  - python setup.py install
+  - pip install pylint
+
+script:
+  - nosetests --config=.noserc
+  - "/home/travis//virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/pylint lib webapp tests && echo 'Finished Pylint Check Cleanly' || echo 'Finished Pylint Check With Errors'"

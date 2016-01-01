@@ -1,10 +1,11 @@
 from codecs import open
 from setuptools import setup, find_packages
 from os import path
+import pip.download
 from pip.req import parse_requirements
 
 here = path.abspath(path.dirname(__file__))
-install_reqs = parse_requirements(path.join(here, 'requirements.txt'))
+install_reqs = parse_requirements(path.join(here, 'requirements.txt'), session=pip.download.PipSession())
 reqs = [str(ir.req) for ir in install_reqs]
 
 with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:

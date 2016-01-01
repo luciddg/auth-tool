@@ -1,5 +1,7 @@
 AuthTool
 ========
+.. image:: https://travis-ci.org/luciddg/auth-tool.svg?branch=master
+   :target: https://travis-ci.org/luciddg/auth-tool
 
 AuthTool is a self-service password reset and SSH public key management application for OpenLDAP directories. 
 
