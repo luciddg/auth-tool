@@ -8,13 +8,13 @@ install_reqs = parse_requirements(path.join(here, 'requirements.txt'))
 reqs = [str(ir.req) for ir in install_reqs]
 
 with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
-  long_description = f.read()
+    long_description = f.read()
 
 setup(
     name='auth-tool',
 
     version='1.0.0',
-    
+
     description='AuthTool',
     long_description=long_description,
 
@@ -29,29 +29,29 @@ setup(
 
     include_package_data=True,
     package_data={
-      'auth-tool': [
-        'public/*', 
-        'template/*',
-      ],
+        'auth-tool': [
+            'public/*',
+            'template/*',
+        ],
     },
 
     data_files=[
-      ('config', ['conf/app.cfg', 'conf/server.cfg']),
+        ('config', ['conf/app.cfg', 'conf/server.cfg']),
     ],
 
     install_requires=reqs,
 
     setup_requires=[
-      'nose>=1.0'
+        'nose>=1.0'
     ],
 
-    extras_require= {
-      'test': [
-        'nose', 
-        'coverage', 
-        'mock',
-        'mockldap',
-      ],
+    extras_require={
+        'test': [
+            'nose',
+            'coverage',
+            'mock',
+            'mockldap',
+        ],
     },
 
 )
