@@ -15,34 +15,14 @@
 import sys
 import os
 
+from mock import Mock as MagicMock
 import sphinx_rtd_theme
 
 # pylint: disable=R0903
-class Mock(object):
-  """
-  Mock out specified imports
-  This allows autodoc to do its thing without having oodles of req'd
-  installed libs. This doesn't work with ``import *`` imports.
-  http://read-the-docs.readthedocs.org/en/latest/faq.html#i-get-import-errors-on-libraries-that-depend-on-c-modules
-  """
-  def __init__(self, *args, **kwargs):
-    pass
-
-  __all__ = []
-
-  def __call__(self, *args, **kwargs):
-    ret = Mock()
-    # If mocked function is used as a decorator, expose decorated function.
-    # if args and callable(args[-1]):
-    #     functools.update_wrapper(ret, args[0])
-    return ret
-
-  @classmethod
-  def __getattr__(cls, name):
-    if name in ('__file__', '__path__'):
-      return '/dev/null'
-    else:
-      return Mock()
+class Mock(MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+        return Mock()
 # pylint: enable=R0903
 
 MOCK_MODULES = [
@@ -53,22 +33,23 @@ MOCK_MODULES = [
     'cherrypy.wsgiserver',
     'ldap',
     'smbpasswd',
-    ]
+    'python-ldap',
+    'mockldap',
+]
 
-for mod_name in MOCK_MODULES:
-  sys.modules[mod_name] = Mock()
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 try:
-  docs_basepath = os.path.abspath(os.path.dirname(__file__))
+    docs_basepath = os.path.abspath(os.path.dirname(__file__))
 except NameError:
-  # sphinx-intl and six execute some code which will raise this NameError
-  # assume we're in the doc/ directory
-  docs_basepath = os.path.abspath(os.path.dirname('.'))
+    # sphinx-intl and six execute some code which will raise this NameError
+    # assume we're in the doc/ directory
+    docs_basepath = os.path.abspath(os.path.dirname('.'))
 
 addtl_paths = (os.pardir)
 
 for path in addtl_paths:
-  sys.path.insert(0, os.path.abspath(os.path.join(docs_basepath, path)))
+    sys.path.insert(0, os.path.abspath(os.path.join(docs_basepath, path)))
 
 # -- General configuration ------------------------------------------------
 
@@ -81,7 +62,7 @@ for path in addtl_paths:
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
-    ]
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -149,7 +130,7 @@ modindex_common_prefix = ['lib.model.', 'lib.plugin.', 'lib.tool.']
 
 # -- Options for HTML output ----------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
+# The theme to use for HTML and HTML Help pages.    See the documentation for
 # a list of builtin themes.
 html_theme = 'sphinx_rtd_theme'
 
@@ -161,7 +142,7 @@ html_theme = 'sphinx_rtd_theme'
 # Add any paths that contain custom themes here, relative to this directory.
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
-# The name for this set of Sphinx documents.  If None, it defaults to
+# The name for this set of Sphinx documents.    If None, it defaults to
 # "<project> v<release> documentation".
 #html_title = None
 
@@ -243,15 +224,15 @@ latex_elements = {
 
     # Additional stuff for the LaTeX preamble.
     #'preamble': '',
-    }
+}
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     ('index', 'AuthTool.tex', u'AuthTool Documentation',
-      u'Lucid Operations', 'manual'),
-    ]
+        u'Lucid Operations', 'manual'),
+]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
@@ -280,8 +261,8 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'authtool', u'AuthTool Documentation',
-      [u'Lucid Operations'], 1)
-    ]
+        [u'Lucid Operations'], 1)
+]
 
 # If true, show URL addresses after external links.
 #man_show_urls = False
@@ -294,9 +275,9 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index', 'AuthTool', u'AuthTool Documentation',
-      u'Lucid Operations', 'AuthTool', 'One line description of project.',
-      'Miscellaneous'),
-    ]
+        u'Lucid Operations', 'AuthTool', 'One line description of project.',
+        'Miscellaneous'),
+]
 
 # Documents to append as an appendix to all manuals.
 #texinfo_appendices = []
