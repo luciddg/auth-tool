@@ -49,6 +49,10 @@ Both use the same interface, so it comes down to personal preference.
 
 Docker
 ^^^^^^
+.. image:: https://img.shields.io/docker/pulls/luciddg/auth-tool.svg 
+   :target: https://hub.docker.com/r/luciddg/auth-tool/
+.. image:: https://img.shields.io/docker/stars/luciddg/auth-tool.svg 
+   :target: https://hub.docker.com/r/luciddg/auth-tool/
 
 A Dockerfile is included to build and run the application.
 
