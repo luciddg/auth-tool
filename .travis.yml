@@ -6,7 +6,11 @@ python:
 install:
   - python setup.py install
   - pip install pylint
+  - pip install coveralls
 
 script:
   - nosetests --config=.noserc
   - "/home/travis//virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/pylint lib webapp tests && echo 'Finished Pylint Check Cleanly' || echo 'Finished Pylint Check With Errors'"
+
+after_success:
+  - coveralls

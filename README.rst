@@ -6,6 +6,11 @@ AuthTool
    :target: http://auth-tool.readthedocs.org/en/latest/?badge=latest
    :alt: Documentation Status
 
+.. image:: https://coveralls.io/repos/luciddg/auth-tool/badge.svg?branch=master&service=github
+   :target: https://coveralls.io/github/luciddg/auth-tool?branch=master
+
+
+
 AuthTool is a self-service password reset and SSH public key management application for OpenLDAP directories. 
 
 Features include:
