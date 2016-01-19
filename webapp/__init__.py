@@ -139,7 +139,7 @@ class AuthTool(object):
             user = cherrypy.session['user']
             if http_method == 'POST':
                 try:
-                    newkey = SSHKey(sshpubkey)
+                    newkey = SSHKey(sshpubkey.strip())
                     user.add_key(newkey.key)
                     return {
                         'ok': True,
