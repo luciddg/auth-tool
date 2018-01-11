@@ -54,7 +54,7 @@ class EmailEnginePlugin(plugins.SimplePlugin):
 
         username = user['uid'][0]
         token = cherrypy.engine.publish('token-gen', username).pop()
-        base_url = urljoin(cherrypy.request.base, '/reset')
+        base_url = urljoin('https://',cherrypy.request.base, '/reset')
         user['reset_url'] = urljoin(base_url, '?token={0}&username={1}'.format(token, username))
 
         template = cherrypy.config.get('email', {}).get('template', 'email')
@@ -92,7 +92,7 @@ class EmailEnginePlugin(plugins.SimplePlugin):
         Send username reminder email to given email address
         """
         username = user['uid'][0]
-        base_url = urljoin(cherrypy.request.base, '/')
+        base_url = urljoin('https://',cherrypy.request.base, '/')
         user['login_url'] = urljoin(base_url, '?username={0}'.format(username))
 
         template = cherrypy.config.get('email', {}).get('template', 'email')
